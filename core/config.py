@@ -15,8 +15,8 @@ class Settings:
     DB_HOST: str = os.getenv("DB_HOST")
     DB_PORT: str = os.getenv("DB_PORT")
     DB_NAME: str = os.getenv("DB_NAME")
-    # JWT_SECRET: str = os.getenv("JWT_SECRET")
-    # JWT_ALGORITHM: str = os.getenv("JWT_ALGORITHM")
+    JWT_SECRET: str = os.getenv("JWT_SECRET")
+    JWT_ALGORITHM: str = os.getenv("JWT_ALGORITHM")
 
     """Funcion que retorna el string de conexiòn a la bbdd """
 

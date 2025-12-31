@@ -1,4 +1,4 @@
-"""models.py
+"""apps.py
 Mmodelo de usuarios con SQLAlchemy, incluyendo roles y autenticación básica.
 """
 import enum
