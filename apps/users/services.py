@@ -13,7 +13,7 @@ def create_user(db: Session, user: UserCreate) -> User:
     hashed_pw = hash_password(user.password)
     db_user = User(username=user.username,
                    email=user.email,
-                   hashed_password=hashed_pw,
+                   password=hashed_pw,
                    role=user.role
                    )
     db.add(db_user)
@@ -57,7 +57,7 @@ def update_user(db: Session, user_id: int, user_update: UserUpdate) -> Optional[
     if user_update.role is not None:
         db_user.role = user_update.role
     if user_update.password is not None:
-        db_user.hashed_password = hash_password(user_update.password)
+        db_user.password = hash_password(user_update.password)
 
     try:
         db.commit()
@@ -91,11 +91,11 @@ def authenticate_user(
     stmt = select(User).where(User.email == email)
     user = db.execute(stmt).scalar_one_or_none()
 
-    if not user or not verify_password(password, user.hashed_password):
+    if not user or not verify_password(password, user.password):
         return None
 
     return user
 
 
 def generate_token(user: User):
-    return create_access_token({"sub": user.email, "role": user.role.value})
+    return create_access_token({"sub": user.id, "role": user.role.value})
