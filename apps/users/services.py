@@ -27,14 +27,14 @@ def create_user(db: Session, user: UserCreate) -> User:
 
 
 # Obtener usuario por ID
-def get_user(db: Session, user_id: int) -> Optional[User]:
+def get_user_by_id(db: Session, user_id: int) -> Optional[User]:
     stmt = select(User).where(user_id == User.id)
     return db.execute(stmt).scalar_one_or_none()
 
 
 # Obtener usuario por email
 def get_user_by_email(db: Session, email: str) -> Optional[User]:
-    stmt = select(User).where(User.emai==email)
+    stmt = select(User).where(User.email == email)
     return db.execute(stmt).scalar_one_or_none()
 
 
@@ -46,7 +46,7 @@ def get_users(db: Session, skip: int = 0, limit: int = 10) -> list[User]:
 
 # Actualizar usuario
 def update_user(db: Session, user_id: int, user_update: UserUpdate) -> Optional[User]:
-    db_user = get_user(db, user_id)
+    db_user = get_user_by_id(db, user_id)
     if not db_user:
         return None
 
@@ -71,8 +71,7 @@ def update_user(db: Session, user_id: int, user_update: UserUpdate) -> Optional[
 
 
 def delete_user(db: Session, user_id: int) -> bool:
-    stmt = select(User).where(User.id == user_id)
-    db_user = db.execute(stmt).scalar_one_or_none()
+    db_user = get_user_by_id(db, user_id)
 
     if not db_user:
         return False
@@ -81,15 +80,12 @@ def delete_user(db: Session, user_id: int) -> bool:
     db.commit()
     return True
 
-
-
 def authenticate_user(
-    db: Session,
-    email: str,
-    password: str
+        db: Session,
+        email: str,
+        password: str
 ) -> Optional[User]:
-    stmt = select(User).where(User.email == email)
-    user = db.execute(stmt).scalar_one_or_none()
+    user = get_user_by_email(db, email)
 
     if not user or not verify_password(password, user.password):
         return None
@@ -97,5 +93,5 @@ def authenticate_user(
     return user
 
 
-def generate_token(user: User):
-    return create_access_token({"sub": user.id, "role": user.role.value})
+def generate_token(user_id: int, user_role: str):
+    return create_access_token({"sub": str(user_id), "role": user_role})

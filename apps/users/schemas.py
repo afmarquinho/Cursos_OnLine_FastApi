@@ -35,7 +35,7 @@ class UserCreate(UserBase):
             raise ValueError("La contraseña debe contener al menos un número")
         return v
 
-class UserLogin():
+class UserLogin(BaseModel):
     email: EmailStr = Field(..., description="Correo electrónico válido")
     password: str = Field(..., min_length=8, max_length=128, description="Contraseña segura")
 
@@ -60,6 +60,11 @@ class UserUpdate(BaseModel):
             if not any(c.isdigit() for c in v):
                 raise ValueError("La contraseña debe contener al menos un número")
         return v
+
+
+class LoginResponse(BaseModel):
+    username: str
+    token: str
 
 
 # Leer usuario (respuesta al cliente)
