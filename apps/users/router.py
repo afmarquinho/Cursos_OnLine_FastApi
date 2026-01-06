@@ -1,3 +1,5 @@
+from typing import List
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
@@ -21,16 +23,14 @@ def login(form_data: schemas.UserLogin, db: Session = Depends(get_db)):
     if not user:
         raise HTTPException(status_code=401, detail="Credenciales inválidas")
 
-    token = services.generate_token(user.id, user.role)
+    token = services.generate_token(user.id, user.role.value)
 
     return {
         "username": user.username,
         "token": token
     }
 
-
-
-@router.get("/get-all", response_model=schemas.UserOut, status_code=200)
+@router.get("/get-all", response_model=List[schemas.UserOut], status_code=200)
 def get_all(db: Session = Depends(get_db)):
     user_list = services.get_users(db)
     if not user_list:

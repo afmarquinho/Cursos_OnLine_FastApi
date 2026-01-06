@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr, Field, field_validator
+from pydantic import BaseModel, EmailStr, Field, field_validator, ConfigDict
 from enum import Enum
 
 
@@ -7,6 +7,7 @@ class UserRole(str, Enum):
     admin = "admin"
     profesor = "profesor"
     estudiante = "estudiante"
+
 
 # Base común
 class UserBase(BaseModel):
@@ -35,9 +36,11 @@ class UserCreate(UserBase):
             raise ValueError("La contraseña debe contener al menos un número")
         return v
 
+
 class UserLogin(BaseModel):
     email: EmailStr = Field(..., description="Correo electrónico válido")
     password: str = Field(..., min_length=8, max_length=128, description="Contraseña segura")
+
 
 # Actualizar usuario (campos opcionales)
 class UserUpdate(BaseModel):
@@ -68,8 +71,8 @@ class LoginResponse(BaseModel):
 
 
 # Leer usuario (respuesta al cliente)
+
 class UserOut(UserBase):
     id: int
 
-    class Config:
-        orm_mode = True
+    model_config = {'from_attributes': True}
