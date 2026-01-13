@@ -8,35 +8,52 @@ Opcion 2: pytest tests/users --> Todos los tests en users
 Opciòn 3: pytest tests/users/test_auth.py --> Todos los tests en el archivo
 Opciòn 4: pytest tests/users/test_auth.py::test_token --> Ejecuta un tests especìfico
 '''
+from logging import raiseExceptions
 
-from apps.users.security import decode_access_token
+import pytest
+from fastapi import HTTPException
 
-VALID_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwicm9sZSI6ImFkbWluIiwiZXhwIjoxNzY3NjU5ODg0fQ.K4tJV9azC382qz4GMOOz4B33dzPMkByFE5H33r3LMhk"
-INVALID_TOKEN = "TOKEN"
+from apps.users.dependencies import get_current_user_from_token
+from apps.users.security import hash_password, verify_password, create_access_token
+
+pwd:str = "12345"
+hash_pwd:str =  ""
+wrong_pwd:str = "1234"
+valid_token = ""
+INVALID_TOKEN = "INVALID TOKEN"
+
+def test_hash_pwd():
+    global hash_pwd
+    hash_pwd = hash_password(pwd)
+    print(hash_pwd)
+
+def test_valid_pwd():
+    is_valid = verify_password(pwd, hash_pwd)
+    print(f"\nEl password es vàlido: {is_valid}")
+
+def test_wrong_pwd():
+    is_valid = verify_password(wrong_pwd, hash_pwd)
+    print(f"\nEl password es invàlido: {is_valid}")
+
+def test_create_access_token():
+    data: dict = {"sub": "1", "username": "user", "role": "admin"}
+    global valid_token
+    valid_token = create_access_token(data)
+    print(f"\nToken Generado: {valid_token}")
+
+def test_valid_token():
+    is_valid = get_current_user_from_token(valid_token)
+    print(f"\nToken validado correctamente, datos del usuario: {is_valid}")
 
 
-def test_token_valid():
-    try:
-        payload = decode_access_token(VALID_TOKEN)
-        print("TOKEN VÀLIDO")
-        print(payload)
-    except Exception as e:
-        print("TOKEN INVÀLIDO")
-        print(type(e).__name__, str(e))
+def test_invalid_token():
+    with pytest.raises(Exception):
+        is_valid = get_current_user_from_token(INVALID_TOKEN)
+        print(f"\nToken invalidado: {'No User' if is_valid is None else is_valid}")
 
-def test_token_invalid():
-    try:
-        payload = decode_access_token(INVALID_TOKEN)
-        print("TOKEN VÀLIDO")
-        print(payload)
-    except Exception as e:
-        print("TOKEN INVÀLIDO")
-        print(type(e).__name__, str(e))
 
-if __name__ == "__main__":
-    print("*** Token Vàlido ***")
-    test_token_valid(VALID_TOKEN)
 
-    print()
-    print("*** Token Invàlido ***")
-    test_token_invalid(INVALID_TOKEN)
+
+
+
+

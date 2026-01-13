@@ -17,6 +17,7 @@ class Settings:
     DB_NAME: str = os.getenv("DB_NAME")
     JWT_SECRET: str = os.getenv("JWT_SECRET")
     JWT_ALGORITHM: str = os.getenv("JWT_ALGORITHM")
+    JWT_ACCESS_TOKEN_EXIPIRE_MINUTES:int = os.getenv("JWT_ACCESS_TOKEN_EXIPIRE_MINUTES")
 
     """Funcion que retorna el string de conexiòn a la bbdd """
 

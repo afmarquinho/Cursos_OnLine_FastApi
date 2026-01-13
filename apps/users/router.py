@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 
 from apps.users import schemas
 from apps.users import services
+from apps.users.dependencies import admin_required, get_current_user_from_token
 from core.database import get_db
 
 router = APIRouter(prefix='/api/users', tags=['Users'])
@@ -31,7 +32,7 @@ def login(form_data: schemas.UserLogin, db: Session = Depends(get_db)):
     }
 
 @router.get("/get-all", response_model=List[schemas.UserOut], status_code=200)
-def get_all(db: Session = Depends(get_db)):
+def get_all(db: Session = Depends(get_db), _:dict= Depends(get_current_user_from_token)):
     user_list = services.get_users(db)
     if not user_list:
         raise HTTPException(status_code=404, detail="Usuarios no encontrados")

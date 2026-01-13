@@ -4,24 +4,26 @@ from jose import JWTError
 
 from apps.users.security import decode_access_token
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/users/login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/users/login")
 
 
-def get_current_user(token: str = Depends(oauth2_scheme)):
+def get_current_user_from_token (token: str = Depends(oauth2_scheme)):
     try:
         payload = decode_access_token(token)
         user_id: str | None = payload.get("sub")
         role: str | None = payload.get("role")
+        username:str | None = payload.get("username")
 
-        if user_id is None or role is None:
+        if user_id is None or role is None or username is None:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Token inválido"
             )
 
         return {
-            "user_id": int(user_id),
-            "role": role
+            "sub": int(user_id),
+            "role": role,
+            "username": username
         }
 
     except JWTError:
@@ -30,10 +32,12 @@ def get_current_user(token: str = Depends(oauth2_scheme)):
             detail="Token inválido o expirado"
         )
 
-def require_admin(current_user: dict = Depends(get_current_user)):
+
+def admin_required(current_user: dict = Depends(get_current_user_from_token)):
     if current_user["role"] != "admin":
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="Permisos insuficientes"
+            detail="No tienes permisos de administrador"
         )
+
     return current_user
