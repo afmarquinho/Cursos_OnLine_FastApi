@@ -4,7 +4,7 @@ Manual: python tests/users/test_auth.py
 Usando pytest: Desde la consola tengo 4 opciones
 Opciòn 1: pytest --> Ejecuta todos los tests
 Opciòn 1.1 : pytest -v -s --> Ejecuta todos los tests e imprime los prints
-Opcion 2: pytest tests/users --> Todos los tests en users
+Opcion 2: --> Todos los tests en users
 Opciòn 3: pytest tests/users/test_auth.py --> Todos los tests en el archivo
 Opciòn 4: pytest tests/users/test_auth.py::test_token --> Ejecuta un tests especìfico
 '''
@@ -13,7 +13,7 @@ from logging import raiseExceptions
 import pytest
 from fastapi import HTTPException
 
-from apps.users.dependencies import get_current_user_from_token
+from apps.users.dependencies import get_current_user
 from apps.users.security import hash_password, verify_password, create_access_token
 
 pwd:str = "12345"
@@ -42,13 +42,13 @@ def test_create_access_token():
     print(f"\nToken Generado: {valid_token}")
 
 def test_valid_token():
-    is_valid = get_current_user_from_token(valid_token)
+    is_valid = get_current_user(valid_token)
     print(f"\nToken validado correctamente, datos del usuario: {is_valid}")
 
 
 def test_invalid_token():
     with pytest.raises(Exception):
-        is_valid = get_current_user_from_token(INVALID_TOKEN)
+        is_valid = get_current_user(INVALID_TOKEN)
         print(f"\nToken invalidado: {'No User' if is_valid is None else is_valid}")
 
 

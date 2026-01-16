@@ -1,0 +1,30 @@
+2026-01-15 22:48:15,207 - INFO - SELECT DATABASE()
+2026-01-15 22:48:15,209 - INFO - [raw sql] {}
+2026-01-15 22:48:15,215 - INFO - SELECT @@sql_mode
+2026-01-15 22:48:15,217 - INFO - [raw sql] {}
+2026-01-15 22:48:15,221 - INFO - SELECT @@lower_case_table_names
+2026-01-15 22:48:15,223 - INFO - [raw sql] {}
+2026-01-15 22:48:15,231 - INFO - BEGIN (implicit)
+2026-01-15 22:48:15,259 - INFO - SELECT users.id, users.username, users.email, users.password, users.`role` 
+FROM users 
+WHERE users.email = %(email_1)s
+2026-01-15 22:48:15,262 - INFO - [generated in 0.00379s] {'email_1': 'user2@example.com'}
+2026-01-15 22:48:17,208 - INFO - ROLLBACK
+2026-01-15 22:48:17,245 - INFO - BEGIN (implicit)
+2026-01-15 22:48:17,256 - INFO - SELECT users.id, users.username, users.email, users.password, users.`role` 
+FROM users 
+ LIMIT %(param_1)s, %(param_2)s
+2026-01-15 22:48:17,258 - INFO - [generated in 0.00261s] {'param_1': 0, 'param_2': 10}
+2026-01-15 22:48:17,283 - INFO - ROLLBACK
+2026-01-15 22:49:01,713 - INFO - BEGIN (implicit)
+2026-01-15 22:49:01,718 - INFO - SELECT users.id, users.username, users.email, users.password, users.`role` 
+FROM users 
+WHERE users.email = %(email_1)s
+2026-01-15 22:49:01,720 - INFO - [cached since 46.46s ago] {'email_1': 'user5@example.com'}
+2026-01-15 22:49:03,914 - INFO - ROLLBACK
+2026-01-15 22:49:21,312 - INFO - BEGIN (implicit)
+2026-01-15 22:49:21,317 - INFO - SELECT users.id, users.username, users.email, users.password, users.`role` 
+FROM users 
+WHERE users.email = %(email_1)s
+2026-01-15 22:49:21,319 - INFO - [cached since 66.06s ago] {'email_1': 'user5@example.com'}
+2026-01-15 22:49:23,335 - INFO - ROLLBACK

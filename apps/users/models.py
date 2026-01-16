@@ -21,4 +21,4 @@ class User(Base):
     email = Column(String(100), unique=True, nullable=False, index=True)
     password = Column(String(255), nullable=False)
     role = Column(Enum(UserRole), default=UserRole.estudiante, nullable=False)
-
+    # TODO Agregar el diabled como campo adicional y actualizar en el schema - modelos pydanctic

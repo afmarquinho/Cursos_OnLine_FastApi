@@ -8,6 +8,20 @@ from apps.users.schemas import UserCreate, UserUpdate
 from apps.users.security import hash_password, verify_password, create_access_token
 
 
+# Autenticaciòn
+def authenticate_user(
+        db: Session,
+        email: str,
+        password: str
+) -> Optional[User]:
+    user = get_user_by_email(db, email)
+
+    if not user or not verify_password(password, user.password):
+        return None
+
+    return user
+
+
 # Crear Usuario
 def create_user(db: Session, user: UserCreate) -> User:
     hashed_pw = hash_password(user.password)
@@ -80,18 +94,8 @@ def delete_user(db: Session, user_id: int) -> bool:
     db.commit()
     return True
 
-def authenticate_user(
-        db: Session,
-        email: str,
-        password: str
-) -> Optional[User]:
-    user = get_user_by_email(db, email)
 
-    if not user or not verify_password(password, user.password):
-        return None
-
-    return user
-
-
-def generate_token(user_id: int, user_role: str):
-    return create_access_token({"sub": str(user_id), "role": user_role})
+def generate_token(user_id: int, role: str, username:str):
+    return create_access_token({"sub": str(user_id),
+                                "role": role,
+                                "username": username})

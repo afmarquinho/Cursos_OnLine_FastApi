@@ -65,13 +65,22 @@ class UserUpdate(BaseModel):
         return v
 
 
-class LoginResponse(BaseModel):
+# class LoginResponse(BaseModel):
+#     access_token: str
+
+# Modelo para el token
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+# Modelo del token decodificado
+class Current_user(BaseModel):
+    user_id: int
+    role: str
     username: str
-    token: str
 
 
 # Leer usuario (respuesta al cliente)
-
 class UserOut(UserBase):
     id: int
 

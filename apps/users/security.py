@@ -1,5 +1,8 @@
 from datetime import datetime, timedelta, timezone
+from http.client import HTTPException
+
 import bcrypt
+from fastapi.openapi.utils import status_code_ranges
 from jose import jwt, JWTError
 from core.config import settings
 
@@ -28,6 +31,7 @@ def decode_access_token(token:str):
     try:
         payload = jwt.decode(token, settings.JWT_SECRET,
                              algorithms=[settings.JWT_ALGORITHM])
+
         return payload
-    except JWTError as e:
-        raise Exception(f"Token in`valido o expirado: {e}")
+    except JWTError:
+        raise HTTPException(status_code=401 , detail="Token in`valido o expirado")
