@@ -24,7 +24,7 @@ async def login(form_data: schemas.UserLogin, db: Session = Depends(get_db)):
     if not user:
         raise HTTPException(status_code=401, detail="Credenciales inválidas")
 
-    access_token = services.generate_token(user.id, user.role.value, user.username)
+    access_token = services.generate_token(user.id, user.role.value, user.username, user.is_active)
 
     return {
         "access_token": access_token, "token_type":"bearer"

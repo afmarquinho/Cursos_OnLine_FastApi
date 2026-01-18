@@ -11,9 +11,10 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/users/login")
 def get_current_user (token: str = Depends(oauth2_scheme)) -> Current_user:
     try:
         payload = decode_access_token(token)
-        user_id: str | None = payload.get("sub")
+        user_id: int | None = int(payload.get("sub"))
         role: str | None = payload.get("role")
         username:str | None = payload.get("username")
+        is_active:bool | None = bool(payload.get("is_active"))
 
         if user_id is None or role is None or username is None:
             raise HTTPException(
@@ -21,7 +22,7 @@ def get_current_user (token: str = Depends(oauth2_scheme)) -> Current_user:
                 detail="Token inválido"
             )
         # **paylod hace uan desestructuraciòn y manda los atributos como variables separadas
-        return Current_user(user_id=user_id, role=role, username=username)
+        return Current_user(user_id=user_id, role=role, username=username, is_active=is_active)
 
     except JWTError:
         raise HTTPException(

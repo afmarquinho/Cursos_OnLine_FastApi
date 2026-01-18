@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr, Field, field_validator, ConfigDict
+from pydantic import BaseModel, EmailStr, Field, field_validator
 from enum import Enum
 
 
@@ -48,6 +48,7 @@ class UserUpdate(BaseModel):
     email: EmailStr | None = None
     role: UserRole | None = None
     password: str | None = Field(None, min_length=8, max_length=128)
+    diabled: bool | None = Field(None, description="Indica si el usuario está deshabilitado")
 
     @field_validator("username")
     def no_spaces(cls, v):
@@ -78,10 +79,12 @@ class Current_user(BaseModel):
     user_id: int
     role: str
     username: str
+    is_active:bool
 
 
 # Leer usuario (respuesta al cliente)
 class UserOut(UserBase):
+    is_active:bool
     id: int
 
     model_config = {'from_attributes': True}

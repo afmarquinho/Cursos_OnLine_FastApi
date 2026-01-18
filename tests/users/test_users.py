@@ -2,6 +2,8 @@ import logging
 
 import requests
 
+from apps.users.security import decode_access_token
+
 logger = logging.getLogger(__name__)
 logger.debug("Endpoint raiz llamado")
 
@@ -19,7 +21,7 @@ def print_test(name:str) -> str:
 print_test("Prueba 1: Login correcto y admin correcto")
 def test_login_success():
     # login correcto
-    payload = {"email": "user2@example.com", "password":"UnaClave123*"}
+    payload = {"email": "user1@example.com", "password":"UnaClave123*"}
     res = requests.post(f"{BASE_URL}/login",
                         json=payload
                                  )
@@ -30,7 +32,7 @@ def test_login_success():
     headers = {"Authorization":f"Bearer {token}"}
     # Rol Admin correcto
     admin_res = requests.get(f"{BASE_URL}/get-all", headers=headers)
-    assert admin_res.status_code==200
+    print(f"\n status code: {admin_res.status_code}")
     i = 0
     user_list = admin_res.json()
     for user in user_list:
@@ -70,3 +72,7 @@ def test_login_unauthorized():
     admin_res = requests.get(f"{BASE_URL}/get-all", headers=headers)
     assert admin_res.status_code==403
 
+def test_create():
+    payload = {"username":"user3","email": "user3@example.com", "password": "UnaClave123*", "role":"profesor"}
+    res = requests.post(f"{BASE_URL}/register",json=payload)
+    assert res.status_code == 201

@@ -53,10 +53,9 @@ def get_user_by_email(db: Session, email: str) -> Optional[User]:
 
 
 # Listar usuarios
-def get_users(db: Session, skip: int = 0, limit: int = 10) -> list[User]:
+def get_users(db: Session, skip: int = 0, limit: int = 10) -> Optional[list[User]]:
     stmt = (select(User).offset(skip).limit(limit))
     return db.execute(stmt).scalars().all()
-
 
 # Actualizar usuario
 def update_user(db: Session, user_id: int, user_update: UserUpdate) -> Optional[User]:
@@ -95,7 +94,8 @@ def delete_user(db: Session, user_id: int) -> bool:
     return True
 
 
-def generate_token(user_id: int, role: str, username:str):
+def generate_token(user_id: int, role: str, username:str, is_active:bool):
     return create_access_token({"sub": str(user_id),
                                 "role": role,
-                                "username": username})
+                                "username": username,
+                                "is_active":is_active})
