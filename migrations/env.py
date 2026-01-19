@@ -6,7 +6,8 @@ from sqlalchemy import engine_from_config, pool
 from alembic import context
 from core.database import Base
 from apps.users.models import User
-
+from apps.courses.models import Course, Lesson, course_lesson
+from apps.enrollments.models import Enrollment
 
 # Configuraciòn de Alembic
 config = context.config
