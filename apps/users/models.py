@@ -9,10 +9,13 @@ from sqlalchemy.orm import relationship
 from core.database import Base
 
 
+
 class UserRole(enum.Enum):
     admin = "admin"
-    profesor = "profesor"
-    estudiante = "estudiante"
+    professor = "professor"
+
+class StudentRole(enum.Enum):
+    student = "student"
 
 class User(Base):
     __tablename__ = "user"
@@ -21,7 +24,21 @@ class User(Base):
     username = Column(String(50), unique=True, nullable=False, index=True)
     email = Column(String(100), unique=True, nullable=False, index=True)
     password = Column(String(255), nullable=False)
-    role = Column(Enum(UserRole), default=UserRole.estudiante, nullable=False)
+    role = Column(Enum(UserRole), default=UserRole.professor, nullable=False)
     is_active = Column(Boolean, default=True, index=True)
 
-    enrollment = relationship("enrollment", back_populates="user")
+    # Relación con Lesson
+    lessons = relationship("Lesson", back_populates="user")
+
+
+class Student(Base):
+    __tablename__ = "student"
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    username = Column(String(50), unique=True, nullable=False, index=True)
+    email = Column(String(100), unique=True, nullable=False, index=True)
+    password = Column(String(255), nullable=False)
+    role = Column(Enum(StudentRole), default=StudentRole.student, nullable=False)
+    is_active = Column(Boolean, default=True, index=True)
+
+    enrollment = relationship("Enrollment", back_populates="student")

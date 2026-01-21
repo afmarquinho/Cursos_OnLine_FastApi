@@ -5,16 +5,14 @@ from enum import Enum
 # Enum de roles (igual que en SQLAlchemy)
 class UserRole(str, Enum):
     admin = "admin"
-    profesor = "profesor"
-    estudiante = "estudiante"
-
+    professor = "professor"
 
 # Base común
 class UserBase(BaseModel):
     # Los tres punyos "..." indican que el campoes obliugatorio segun pydantic
     username: str = Field(..., min_length=3, max_length=50, description="Nombre de usuario único")
     email: EmailStr = Field(..., description="Correo electrónico válido")
-    role: UserRole = Field(default=UserRole.estudiante, description="Rol del usuario")
+    role: UserRole = Field(default=UserRole.professor, description="Rol del usuario")
 
     # Validación personalizada para username
     @field_validator("username")
@@ -48,7 +46,7 @@ class UserUpdate(BaseModel):
     email: EmailStr | None = None
     role: UserRole | None = None
     password: str | None = Field(None, min_length=8, max_length=128)
-    diabled: bool | None = Field(None, description="Indica si el usuario está deshabilitado")
+    is_active: bool | None = Field(None, description="Indica si el usuario está activo")
 
     @field_validator("username")
     def no_spaces(cls, v):
@@ -75,7 +73,7 @@ class Token(BaseModel):
     token_type: str
 
 # Modelo del token decodificado
-class Current_user(BaseModel):
+class CurrentUser(BaseModel):
     user_id: int
     role: str
     username: str

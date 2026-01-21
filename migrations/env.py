@@ -5,9 +5,7 @@ from dotenv import load_dotenv
 from sqlalchemy import engine_from_config, pool
 from alembic import context
 from core.database import Base
-from apps.users.models import User
-from apps.courses.models import Course, Lesson, course_lesson
-from apps.enrollments.models import Enrollment
+import core.models
 
 # Configuraciòn de Alembic
 config = context.config

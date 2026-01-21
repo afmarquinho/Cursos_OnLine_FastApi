@@ -5,6 +5,8 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 
 from core.config import settings
 
+
+
 # Crear motor de conexión
 engine = create_engine(settings.DATABASE_URL,  echo=True)
 

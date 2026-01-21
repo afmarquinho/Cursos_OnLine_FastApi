@@ -1,0 +1,18 @@
+2026-01-20 21:32:30,407 - INFO - SELECT DATABASE()
+2026-01-20 21:32:30,410 - INFO - [raw sql] {}
+2026-01-20 21:32:30,416 - INFO - SELECT @@sql_mode
+2026-01-20 21:32:30,417 - INFO - [raw sql] {}
+2026-01-20 21:32:30,421 - INFO - SELECT @@lower_case_table_names
+2026-01-20 21:32:30,422 - INFO - [raw sql] {}
+2026-01-20 21:32:30,433 - INFO - BEGIN (implicit)
+2026-01-20 21:32:30,550 - INFO - SELECT user.id, user.username, user.email, user.password, user.`role`, user.is_active 
+FROM user 
+WHERE user.email = %(email_1)s
+2026-01-20 21:32:30,551 - INFO - [generated in 0.00182s] {'email_1': 'user1@example.com'}
+2026-01-20 21:32:32,650 - INFO - ROLLBACK
+2026-01-20 21:32:32,699 - INFO - BEGIN (implicit)
+2026-01-20 21:32:32,708 - INFO - SELECT user.id, user.username, user.email, user.password, user.`role`, user.is_active 
+FROM user 
+ LIMIT %(param_1)s, %(param_2)s
+2026-01-20 21:32:32,711 - INFO - [generated in 0.00594s] {'param_1': 0, 'param_2': 10}
+2026-01-20 21:32:32,745 - INFO - ROLLBACK
