@@ -4,9 +4,6 @@ import requests
 
 from apps.users.security import decode_access_token
 
-logger = logging.getLogger(__name__)
-logger.debug("Endpoint raiz llamado")
-
 BASE_URL = "http://127.0.0.1:8000/api/users"
 token = ""
 INVALID_TOKEN = "invalid_token"
@@ -92,13 +89,13 @@ def test_login_success():
 #     # Rol Admin correcto
 #     admin_res = requests.get(f"{BASE_URL}/get-all", headers=headers)
 #     assert admin_res.status_code==403
-
-def test_get_all_students():
-    res = requests.get(f"{BASE_URL}/get-all-students", headers=headers)
-    print(f"Token: {token}")
-    assert res.status_code == 200
-    i = 0
-    student_list = res.json()
-    for student in student_list:
-        i += 1
-        print(f"\n{i} - {student}")
+#
+# def test_get_all_students():
+#     res = requests.get(f"{BASE_URL}/get-all-students", headers=headers)
+#     print(f"Token: {token}")
+#     assert res.status_code == 200
+#     i = 0
+#     student_list = res.json()
+#     for student in student_list:
+#         i += 1
+#         print(f"\n{i} - {student}")

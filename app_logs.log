@@ -1,18 +1,49 @@
-2026-01-20 21:32:30,407 - INFO - SELECT DATABASE()
-2026-01-20 21:32:30,410 - INFO - [raw sql] {}
-2026-01-20 21:32:30,416 - INFO - SELECT @@sql_mode
-2026-01-20 21:32:30,417 - INFO - [raw sql] {}
-2026-01-20 21:32:30,421 - INFO - SELECT @@lower_case_table_names
-2026-01-20 21:32:30,422 - INFO - [raw sql] {}
-2026-01-20 21:32:30,433 - INFO - BEGIN (implicit)
-2026-01-20 21:32:30,550 - INFO - SELECT user.id, user.username, user.email, user.password, user.`role`, user.is_active 
-FROM user 
-WHERE user.email = %(email_1)s
-2026-01-20 21:32:30,551 - INFO - [generated in 0.00182s] {'email_1': 'user1@example.com'}
-2026-01-20 21:32:32,650 - INFO - ROLLBACK
-2026-01-20 21:32:32,699 - INFO - BEGIN (implicit)
-2026-01-20 21:32:32,708 - INFO - SELECT user.id, user.username, user.email, user.password, user.`role`, user.is_active 
-FROM user 
+2026-01-22 02:24:00,060 - INFO - SELECT DATABASE()
+2026-01-22 02:24:00,063 - INFO - [raw sql] {}
+2026-01-22 02:24:00,074 - INFO - SELECT @@sql_mode
+2026-01-22 02:24:00,079 - INFO - [raw sql] {}
+2026-01-22 02:24:00,087 - INFO - SELECT @@lower_case_table_names
+2026-01-22 02:24:00,092 - INFO - [raw sql] {}
+2026-01-22 02:24:00,101 - INFO - BEGIN (implicit)
+2026-01-22 02:24:00,227 - INFO - SELECT student.id, student.username, student.email, student.password, student.`role`, student.is_active 
+FROM student 
+WHERE student.email = %(email_1)s
+2026-01-22 02:24:00,229 - INFO - [generated in 0.00185s] {'email_1': 'student4@example.com'}
+2026-01-22 02:24:02,170 - INFO - ROLLBACK
+2026-01-22 02:24:02,294 - INFO - BEGIN (implicit)
+2026-01-22 02:24:02,313 - INFO - INSERT INTO enrollment (student_id, course_id, completed, grade) VALUES (%(student_id)s, %(course_id)s, %(completed)s, %(grade)s)
+2026-01-22 02:24:02,314 - INFO - [generated in 0.00328s] {'student_id': 4, 'course_id': 2, 'completed': 0, 'grade': 0.0}
+2026-01-22 02:24:02,359 - INFO - COMMIT
+2026-01-22 02:24:02,389 - INFO - BEGIN (implicit)
+2026-01-22 02:24:02,409 - INFO - SELECT enrollment.student_id, enrollment.course_id, enrollment.completed, enrollment.grade 
+FROM enrollment 
+WHERE enrollment.student_id = %(pk_1)s AND enrollment.course_id = %(pk_2)s
+2026-01-22 02:24:02,411 - INFO - [generated in 0.00433s] {'pk_1': 4, 'pk_2': 2}
+2026-01-22 02:24:02,430 - INFO - ROLLBACK
+2026-01-22 02:24:02,478 - INFO - BEGIN (implicit)
+2026-01-22 02:24:02,480 - INFO - INSERT INTO enrollment (student_id, course_id, completed, grade) VALUES (%(student_id)s, %(course_id)s, %(completed)s, %(grade)s)
+2026-01-22 02:24:02,481 - INFO - [cached since 0.1701s ago] {'student_id': 4, 'course_id': 3, 'completed': 0, 'grade': 0.0}
+2026-01-22 02:24:02,496 - INFO - COMMIT
+2026-01-22 02:24:02,528 - INFO - BEGIN (implicit)
+2026-01-22 02:24:02,534 - INFO - SELECT enrollment.student_id, enrollment.course_id, enrollment.completed, enrollment.grade 
+FROM enrollment 
+WHERE enrollment.student_id = %(pk_1)s AND enrollment.course_id = %(pk_2)s
+2026-01-22 02:24:02,550 - INFO - [cached since 0.1433s ago] {'pk_1': 4, 'pk_2': 3}
+2026-01-22 02:24:02,582 - INFO - ROLLBACK
+2026-01-22 02:24:02,659 - INFO - BEGIN (implicit)
+2026-01-22 02:24:02,664 - INFO - INSERT INTO enrollment (student_id, course_id, completed, grade) VALUES (%(student_id)s, %(course_id)s, %(completed)s, %(grade)s)
+2026-01-22 02:24:02,668 - INFO - [cached since 0.3569s ago] {'student_id': 4, 'course_id': 1, 'completed': 0, 'grade': 0.0}
+2026-01-22 02:24:02,685 - INFO - COMMIT
+2026-01-22 02:24:02,710 - INFO - BEGIN (implicit)
+2026-01-22 02:24:02,714 - INFO - SELECT enrollment.student_id, enrollment.course_id, enrollment.completed, enrollment.grade 
+FROM enrollment 
+WHERE enrollment.student_id = %(pk_1)s AND enrollment.course_id = %(pk_2)s
+2026-01-22 02:24:02,717 - INFO - [cached since 0.3097s ago] {'pk_1': 4, 'pk_2': 1}
+2026-01-22 02:24:02,773 - INFO - ROLLBACK
+2026-01-22 02:24:02,883 - INFO - BEGIN (implicit)
+2026-01-22 02:24:02,899 - INFO - SELECT enrollment.student_id, enrollment.course_id, enrollment.completed, enrollment.grade 
+FROM enrollment 
+WHERE enrollment.student_id = %(student_id_1)s 
  LIMIT %(param_1)s, %(param_2)s
-2026-01-20 21:32:32,711 - INFO - [generated in 0.00594s] {'param_1': 0, 'param_2': 10}
-2026-01-20 21:32:32,745 - INFO - ROLLBACK
+2026-01-22 02:24:02,902 - INFO - [generated in 0.00397s] {'student_id_1': 4, 'param_1': 0, 'param_2': 10}
+2026-01-22 02:24:02,940 - INFO - ROLLBACK

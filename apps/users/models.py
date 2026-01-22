@@ -27,9 +27,17 @@ class User(Base):
     role = Column(Enum(UserRole), default=UserRole.professor, nullable=False)
     is_active = Column(Boolean, default=True, index=True)
 
-    # Relación con Lesson
+    # Relación con Lesson parea profesores
     lessons = relationship("Lesson", back_populates="user")
 
+    def __repr__(self):
+        return (
+            f"<User(id={self.id}, "
+            f"username='{self.username}', "
+            f"email='{self.email}', "
+            f"role='{self.role.name}', "
+            f"is_active={self.is_active})>"
+        )
 
 class Student(Base):
     __tablename__ = "student"

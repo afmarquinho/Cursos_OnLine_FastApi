@@ -1,49 +1,56 @@
 from pydantic import BaseModel, Field, field_validator
 
-
+# -------------------------
 # Esquemas para cursos
+# -------------------------
 
-# Base común
 class CourseBase(BaseModel):
-    # Los tres punyos "..." indican que el campoes obliugatorio segun pydantic
     title: str = Field(..., min_length=5, max_length=50, description="Nombre del curso")
-    description: str = Field(..., min_length=10, description="Descripciòn del curso")
+    description: str = Field(..., min_length=10, description="Descripción del curso")
 
-
-# Crear curso
 class CourseCreate(CourseBase):
     pass
 
-
-# Actualizar un curso
 class CourseUpdate(BaseModel):
     title: str | None = Field(None, min_length=5, max_length=50)
-    description: str | None = Field(None, min_length=10, description="Descripciòn del curso")
+    description: str | None = Field(None, min_length=10, description="Descripción del curso")
     is_active: bool | None = Field(None)
 
-
-# Leer un curso de la bbdd
 class CourseOut(CourseBase):
     is_active: bool
     id: int
 
     model_config = {'from_attributes': True}
 
-
+# -------------------------
 # Esquemas para lecciones
-class LessonBase(BaseModel):
-    title: str = Field(..., min_length=5, max_length=50, description="Titulo de la descripciòn")
+# -------------------------
 
+class LessonBase(BaseModel):
+    title: str = Field(..., min_length=5, max_length=50, description="Título de la lección")
+    professor_id: int
+
+    @field_validator("professor_id")
+    def is_positive(cls, value):
+        if value < 1:
+            raise ValueError("Id del profesor incorrecto")
+        return value
 
 class LessonCreate(LessonBase):
     pass
 
+class LessonUpdate(BaseModel):
+    title: str | None = Field(None, min_length=5, max_length=50)
+    professor_id: int | None = Field(None)
 
-class LessonUpdate(LessonBase):
-    pass
-
+    @field_validator("professor_id")
+    def is_positive(cls, value):
+        if value is not None and value < 1:
+            raise ValueError("Id del profesor incorrecto")
+        return value
 
 class LessonOut(LessonBase):
     id: int
 
     model_config = {'from_attributes': True}
+

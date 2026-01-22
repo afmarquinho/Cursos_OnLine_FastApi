@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 from apps.users import schemas
 from apps.users import services
-from apps.users.dependencies import check_admin, role_required
+from apps.users.dependencies import role_required
 from apps.users.services import get_users
 from apps.users.students.schemas import StudentOut
 from apps.users.students.services import get_students
